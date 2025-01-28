@@ -5,20 +5,17 @@ from scipy.sparse.linalg import cg
 
 def generate_sparse_matrix_with_uncertainty(dim, noise_level=0.1):
     A = np.random.rand(dim, dim)
-    A = np.triu(A)  # Upper triangular matrix to ensure sparsity
-    A = csr_matrix(A)  # Convert to sparse CSR format
+    A = np.triu(A)  
+    A = csr_matrix(A)  
 
-    # Add uncertainty (noise) to the matrix
     noise = np.random.randn(A.nnz) * noise_level
-    A.data += noise  # Add noise to non-zero elements
+    A.data += noise 
 
     return A
 
-# Function to generate the right-hand side vector
 def generate_rhs(dim):
     return np.random.rand(dim)
-
-# Function to plot convergence (Error vs. Iterations) for CG
+    
 def plot_convergence(errors):
     plt.plot(errors)
     plt.xlabel('Iteration')
@@ -27,18 +24,16 @@ def plot_convergence(errors):
     plt.grid(True)
     plt.show()
 
-# Function to plot the condition number distribution
 def plot_condition_number(matrix):
-    eigenvalues = np.linalg.eigvals(matrix.toarray())  # Convert sparse matrix to dense
+    eigenvalues = np.linalg.eigvals(matrix.toarray())  
     plt.hist(np.abs(eigenvalues), bins=50)
     plt.xlabel('Eigenvalue Magnitude')
     plt.ylabel('Frequency')
     plt.title('Condition Number Distribution')
     plt.show()
 
-# Function to plot the sparsity pattern of the matrix
 def plot_matrix_sparsity(matrix):
-    coo = matrix.tocoo()  # Convert sparse matrix to COO format
+    coo = matrix.tocoo()  
     plt.scatter(coo.col, coo.row, color='blue', s=1)
     plt.xlabel('Column Index')
     plt.ylabel('Row Index')
